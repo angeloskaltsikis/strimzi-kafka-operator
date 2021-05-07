@@ -18,7 +18,7 @@ DOCKER_TARGETS=docker_build docker_push docker_tag
 all: prerequisites_check $(SUBDIRS) crd_install helm_install shellcheck docu_versions docu_check
 clean: prerequisites_check $(SUBDIRS) docu_clean
 $(DOCKER_TARGETS): prerequisites_check $(SUBDIRS)
-release: release_prepare release_version release_helm_version release_test_container release_maven $(SUBDIRS) release_docu release_single_file release_pkg release_helm_repo docu_clean
+release: release_prepare release_version release_test_container release_maven $(SUBDIRS) release_docu release_single_file release_pkg docu_clean
 
 next_version:
 	echo $(shell echo $(NEXT_VERSION) | tr a-z A-Z) > release.version
@@ -66,7 +66,7 @@ release_test_container:
 	echo "Update Strimzi version for test container to $(RELEASE_VERSION)"
 	echo "$(RELEASE_VERSION)" > test-container/src/main/resources/strimzi-version.txt
 
-release_pkg: helm_pkg	
+release_pkg:	
 	tar -z -cf ./strimzi-$(RELEASE_VERSION).tar.gz strimzi-$(RELEASE_VERSION)/
 	zip -r ./strimzi-$(RELEASE_VERSION).zip strimzi-$(RELEASE_VERSION)/
 	rm -rf ./strimzi-$(RELEASE_VERSION)
